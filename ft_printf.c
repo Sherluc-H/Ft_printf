@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhuang <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:13:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/10/30 17:42:39 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/09 18:26:37 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,50 @@ int	ft_is_converter(char c)
 	(c == 'x') || (c == 'X') || (c == '%'));
 }
 
-int	ft_is_flag(char c)
+int ft_is_number(char c)
 {
-	return ((c == '-') || (c == '0') || (c == '.') || (c == '*'));
+	return ((c >= '0' && c <= '9'));
 }
 
-void	ft_print(char tc, va_list p, char *str)
+int	ft_is_flag(char c)
+{
+	return ((c == '-') || (c == '0') || (c == '.') || (c == '*') || ft_is_number(c));
+}
+
+void	ft_print(char converter, va_list p_copy, t_cut *cut, int *size)
 {
 	//cas is convert
 	//cas pas un convert yaura un warning mais affiche
 	//* peut prendre un argument plus loin pas necessairement a cote de l'appel
-	if (tc == 'c')
-		ft_putchar_fd(va_arg(p, int), 1);
-	else if (tc == 's')
-		ft_putstr_fd(va_arg(p, char*), 1);
-	else if (tc == 'p')
-		ft_putaddress(va_arg(p, void*));
-	else if (tc == 'd' || tc == 'i')
-		ft_putnbr_fd(va_arg(p, int), 1);
-	else if (tc == 'u')
-		ft_putnbr_unsigned(va_arg(p, unsigned int));
-	else if (tc == 'x')
-		ft_putnbr_base((unsigned long)va_arg(p, int),
+	if (converter == 'c')
+		ft_putchar(va_arg(p_copy, int));
+	else if (converter == 's')
+		ft_putstr(va_arg(p_copy, char*));
+	else if (converter == 'p')
+		ft_putaddress(va_arg(p_copy, void*));
+	else if (converter == 'd' || converter == 'i')
+	{
+		*size = *size + ft_printnbr(converter, p_copy, cut);
+		// ft_putnbr(va_arg(p_copy, int));
+	}
+	else if (converter == 'u')
+		ft_putnbr_unsigned(va_arg(p_copy, unsigned int));
+	else if (converter == 'x')
+		ft_putnbr_base((unsigned long)va_arg(p_copy, int),
 		"0123456789abcdef", 16);
-	else if (tc == 'X')
-		ft_putnbr_base((unsigned long)va_arg(p, int),
+	else if (converter == 'X')
+		ft_putnbr_base((unsigned long)va_arg(p_copy, int),
 		"0123456789ABCDEF", 16);
-	else
+	else if(converter == '%' && cut->str_lenght == 2)
+	{
 		write(1, "%", 1);
+		*size = *size + 1;
+	}
+	else if(cut->str_lenght > 1)
+	{
+		write(1, &converter, 1);
+		*size = *size + 1;
+	}
 }
 
 int	ft_printf(const char *str, ...)
@@ -71,138 +87,33 @@ int	ft_printf(const char *str, ...)
 	va_list	p_copy;
 	t_cut	*list_cuts;
 	t_cut	*tmp;
+	int		size;
 
+	size = 0;
+	list_cuts = NULL;
 	list_cuts = ft_get_list_of_cut(str);
 	tmp = list_cuts;
+	// printf("new\n");
+	// ft_print_cut_list(&list_cuts);
 	va_start(p, str);
 	va_copy(p_copy, p);
 	while (list_cuts)
 	{
 		if (list_cuts->is_convert)
+		{
 			ft_print(list_cuts->str[list_cuts->str_lenght - 1],
-			p_copy, list_cuts->str);
+			p_copy, list_cuts, &size);
+		}
 		else
+		{
 			write(1, list_cuts->str, list_cuts->str_lenght);
+			size += list_cuts->str_lenght;
+		}
 		list_cuts = list_cuts->next;
 	}
 	va_end(p_copy);
 	va_end(p);
 	ft_free_list_cut(&tmp);
-	return (1);
+	return (size);
 }
 
-// int		ft_nb_of_conversions(const char *str)//compte le nb de str total conversion et non conversion inclus
-// {
-// 	int	i;
-// 	int nb_of_strs;
-// 	int bool_nv_mot;
-
-// 	i = 0;
-// 	nb_of_strs = 0;
-// 	bool_nv_mot = 1;
-// 	printf("==========%d", nb_of_strs);
-// 	while (str[i])
-// 	{
-// 		while (str[i] != '%' && str[i])
-// 		{
-// 			if (bool_nv_mot)
-// 			{
-// 				nb_of_strs++;
-// 				bool_nv_mot = 0;
-// 			}
-// 			i++;
-// 		}
-// 		bool_nv_mot = 1;
-// 		if (str[i] == '%')
-// 		{
-// 			i++;
-// 			printf("%c, i = %d", str[i], i);
-// 			nb_of_strs++;
-// 			while (ft_is_flag(str[i]) && str[i])
-// 				i++;
-// 			if (str[i] == '\0' || !(ft_is_converter(str[i])))
-// 				return (0);
-// 		}
-// 		if(str[i])
-// 			i++;
-// 	}
-// 	printf("==========%d\n", nb_of_strs);
-// 	return (nb_of_strs + 1);
-// }
-
-// char	*ft_get_expected_types(const char *str)//fonction qui met dans un tableau les caracteres +1 apres le %
-// {
-// 	int		i;
-// 	int		size;
-// 	char	*p;
-
-// 	i = 0;
-// 	size = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '%' && (ft_is_converter(str[i + 1]) ||
-// 		ft_is_flag(str[i + 1])))
-// 		{
-// 			if (ft_is_flag(str[i + 1]))
-// 			{
-// 				while (ft_is_flag(str[i + 1]))
-// 					i++;
-// 				if (ft_is_converter(str[i + 1]))
-// 					size++;
-// 				i++;
-// 			}
-// 			else
-// 			{
-// 				size++;
-// 				i++;
-// 			}
-// 			//printf("%c, %d", str[i], i);
-// 		}
-// 		i++;
-// 	}
-// 	//printf("|%d|\n", size);
-// 	p = malloc(sizeof(char) * (size + 1));
-// 	p[size] = '\0';
-// 	i = 0;
-// 	size = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '%' && ft_is_converter(str[i + 1]))
-// 		{
-// 			p[size] = str[i + 1];
-// 			//printf("%c, %d", str[i+1], i+1);
-// 			i++;
-// 			size++;
-// 		}
-// 		i++;
-// 	}
-// 	return (p);
-// }
-
-// int	ft_print(char c, char c2, char tc, va_list p)
-// {
-// 	if (c == '%' && tc && ft_is_converter(c2))
-// 	{
-// 		if (tc == 'c')
-// 			ft_putchar_fd(va_arg(p, int), 1);
-// 		else if (tc  == 's')
-// 			ft_putstr_fd(va_arg(p, char*), 1);
-// 		else if (tc == 'p')
-// 			ft_putaddress(va_arg(p, void*));
-// 		else if (tc == 'd' || tc == 'i')
-// 			ft_putnbr_fd(va_arg(p, int), 1);
-// 		else if (tc == 'u')
-// 			ft_putnbr_unsigned(va_arg(p, unsigned int));
-// 		else if (tc == 'x')
-// 			ft_putnbr_base((unsigned long)va_arg(p, int),
-// 			"0123456789abcdef", 16);
-// 		else if (tc == 'X')
-// 			ft_putnbr_base((unsigned long)va_arg(p, int),
-// 			"0123456789ABCDEF", 16);
-// 		else
-// 			write(1, "%", 1);
-// 		return (1);
-// 	}
-// 	write(1, &c, 1);
-// 	return (0);
-// }

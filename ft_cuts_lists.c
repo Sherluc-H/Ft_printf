@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cuts_lists.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhuang <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:48:27 by lhuang            #+#    #+#             */
-/*   Updated: 2019/10/30 17:48:57 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/09 14:57:09 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	ft_print_cut_list(t_cut **cut)
 		list_cut = *cut;
 		while (list_cut)
 		{
-			printf("=%s=\n", list_cut->str);
-			printf("=%d=\n", list_cut->str_lenght);
-			printf("=%d=\n", list_cut->is_convert);
+			printf("->|str=%s,", list_cut->str);
+			printf("len=%d,", list_cut->str_lenght);
+			printf("is=%d|", list_cut->is_convert);
 			list_cut = list_cut->next;
 		}
 	}
@@ -65,6 +65,7 @@ void	ft_free_list_cut(t_cut **cut)
 	t_cut	*current;
 	t_cut	*tmp;
 
+	current = NULL;
 	if (cut)
 	{
 		current = *cut;
@@ -74,8 +75,8 @@ void	ft_free_list_cut(t_cut **cut)
 		while (current)
 		{
 			tmp = current->next;
-			current->str = NULL;
 			free(current->str);
+			current->str = NULL;
 			free(current);
 			current = tmp;
 		}
