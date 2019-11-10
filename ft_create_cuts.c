@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:43:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/09 15:18:39 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/10 13:32:11 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,11 @@ t_cut	*ft_get_list_of_cut(const char *str)//compte le nb de str total conversion
 				i++;
 				j++;
 			}
-			j++;//va apres le \0 ?
-			i++;
+			if(str[i])
+			{
+				j++;
+				i++;
+			}//va apres le \0 ? sinon ?
 		}
 		if (j != 0)
 			ft_create_cut_convert(&first, str, i, j);
