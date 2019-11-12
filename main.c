@@ -1,8 +1,9 @@
 #include "libftprintf.h"
 
-int	main(int argv, char *argc[])
+int	main(int argc, char **argv)
 {
 	int i;
+	i = 0;
 	// ft_printf("a%d\n", 10);
 	// ft_printf("\n");
 	// ft_printf("mine: abc%c%c%c%%%s%p===%000000d, %i, %u, %u, %x, %Xabc\n", 'x', 'y', 'z', "mno", &i, 123456789, 017, 017, -15, 15, 15);
@@ -36,14 +37,14 @@ int	main(int argv, char *argc[])
 	// printf("%d\n", printf("orig:%", 50, 'a', 50));
 	// printf("%d\n", ft_printf("mine:%*.50sttt", 10, NULL, 50));
 	// printf("%d\n", printf("orig:%*.50sttt", 10, NULL, 50));
-	printf("%d\n", ft_printf("mine:%-0*.3sttt", 10, NULL, 50));
-	printf("%d\n", printf("orig:%-0*.3sttt", 10, NULL, 50));
+	// printf("%d\n", ft_printf("mine:%-0*.3sttt", 10, NULL, 50));
+	// printf("%d\n", printf("orig:%-0*.3sttt", 10, NULL, 50));
 	// printf("%d\n", ft_printf("mine:%0*.5cttt", 10, '0', 50));
 	// printf("%d\n", printf("orig:%0*.5cttt", 10, '0', 50));
 	// printf("%d\n", ft_printf("mine:%-0*.0cabc\n", 50, '\0', 50));
 	// printf("%d\n", printf("orig:%-0*.0cabc\n", 50, '\0', 50));
-	// printf("%d\n", ft_printf("mine:%cabc\n", '\0', 50));
-	// printf("%d\n", printf("orig:%cabc\n", '\0', 50));
+	// printf("%d\n", ft_printf("mine:%-0*1.50cabc\n", 'z', 51));
+	// printf("%d\n", printf("orig:%-0*1.50cabc\n", 'z', 51));
 	// printf("size= %d\n", ft_printf("mine: %-..**20da\n", 100, 1));
 	// printf("size= %d\n", printf("orig: %-..**20da\n", 100, 1));
 	// printf("%d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy");
@@ -54,10 +55,66 @@ int	main(int argv, char *argc[])
 	// while(1);
 	// printf("%d\n", ft_printf("mine:%-0*.50sttt", 10, NULL, 50));
 	// printf("%d\n", printf("orig:%-0*.50sttt", 10, NULL, 50));
-	printf("%d\n", ft_printf("mine:%-0*.50sttt", 10, "abcdef", 50));
-	printf("%d\n", printf("orig:%-0*.50sttt", 10, "abcdef", 50));
+	// printf("%d\n", ft_printf("mine:%0*.50sttt", 10, "abcdef", 50));
+	// printf("%d\n", printf("orig:%0*.50sttt", 10, "abcdef", 50));
+	// printf("size = %d\n", ft_printf("mine %t\n", 1, 10));
+	// printf("size = %d\n", printf("orig %t\n", 1, 10));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("orig:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("orig:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("abcdfghi%*.25d\n", 50,123456));
+	// printf("%d\n", printf("abcdfghi%*.25d\n", 50,123456));
+	// printf("%d\n", ft_printf("ne:%-0***5.**500iabc\n", 600, 20, 50, 115, 10));
+	// printf("%d\n", printf("ne:%-0***5.**500iabc\n", 600, 20, 50, 115, 10));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("orig:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("orig:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("mine:%-0**5.***500iabc\n", 600, 20, 50, 115, 10));
+	// printf("%d\n", printf("orig:%-0**5.***500iabc\n", 600, 20, 50, 115, 10));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("mine:%-0**500.***.20*5*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("mine:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", printf("mine:%-0**500.***.20*5.5.*iabc\n", 600, 20, 50, 120, 10, 205, 60));
+	// printf("%d\n", ft_printf("mine:%-0**5.***.20*500iabc\n", 600, 20, 50, 115, 10));
+	// printf("%d\n", printf("mine:%-0**5.***.20*500iabc\n", 600, 20, 50, 115, 10));
+	/* boucle infini*/
+	// printf("%d\n", ft_printf("mine:%-0**5.***500iabc\n", 2));
+	// printf("%d\n", printf("orig:%-0**5.***500iabc\n", 2));
+// printf("%d\n", ft_printf("mine:%-0**5.***.20*500iabc\n", 600, 20, 50, 115, 10));
+// printf("%d\n", printf("mine:%-0**5.***.20*500iabc\n", 600, 20, 50, 115, 10));
+// printf("%d\n", ft_printf("omine:%-0**5.***500iabc\n", 600, 20, 50, 115, 10));
+// printf("%d\n", printf("omine:%-0**5.***500iabc\n", 600, 20, 50, 115, 10));
 
+	// printf("%d\n", ft_printf("mine : qwerty:%*100.10iabc\n", 15, -555555, 50));
+	// printf("%d\n", printf("orig : qwerty:%*100.10iabc\n", 15, -555555, 50));
+	// printf("%d\n", ft_printf("ne:%0**5.**500iabc\n", 600, 20, 50, 115, -10));
+	// printf("%d\n", printf("ne:%0**5.**500iabc\n", 600, 20, 50, 115, -10));
+	// printf("%d\n", ft_printf("qwerty:%*100.iabc\n", 15, -555555, 50));
+	// printf("%d\n", printf("qwerty:%*100.iabc\n", 15, -555555, 50));
+	// printf("%d\n", ft_printf("mine:%*100.iabc\n", 15, 0, 50));
+	// printf("%d\n", printf("orig:%*100.iabc\n", 15, 0, 50));
+	printf("%d\n", ft_printf("mine|%c|\n", '\0'));
+	printf("%d\n", printf("orig|%c|\n", '\0'));
+	// printf("size = %d\n", ft_printf("mine:%*50d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
+	// printf("size = %d\n", printf("orig:%*50d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
+	// printf("size = %d\n", printf("%d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
+	// printf("size = %d\n", ft_printf("%d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
+	// printf("%d\n", ft_printf("mine:%-*100.iabc\n", 15, -555555, 50));
+	// printf("%d\n", printf("orig:%-*100.iabc\n", 15, -555555, 50));
+	printf("%d\n", ft_printf("mine:%0-*200.15pabc\n", 100, &i, 50));
+	printf("%d\n", printf("orig:%0*-200.15pabc\n", 100, &i, 50));
+	printf("size = %d\n", ft_printf("mine:%d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmno\0pqrstuvwxy"));
+	printf("size = %d\n", printf("orig:%d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmno\0pqrstuvwxy"));
+	printf("size = %d\n", ft_printf("mine:%.50*x", 15, 62));
+	printf("size = %d\n", printf("orig:%.50*x", 15, 62));
+	printf("size = %d\n", ft_printf("mine:%.50*d", 15, 62));
+	printf("size = %d\n", printf("orig:%.50*d", 15, 62));
+	printf("size = %d\n", ft_printf("mine:%*50d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
+	printf("size = %d\n", printf("orig:%*50d123%d%d%d%d%d%dabc%sz\n", 0, 4, 5, 6, 7, 8, 9, "defhghijklmnopqrstuvwxy"));
 
+// while(1);
 }
 	// printf("orig: abc%c%c%c%%%s%p===%000000d, %i, %u, %u, %x, %Xabc%0\n", 'x', 'y', 'z', "mno", &i, 123456789, 017, 017, -15, 15, 15);
 //bizzare rien ne s'affiche

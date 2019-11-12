@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:13:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/10 19:39:28 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/11 19:41:14 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_is_flag(char c)
 	return ((c == '-') || (c == '0') || (c == '.') || (c == '*') || ft_is_number(c));
 }
 
-void	ft_print(char converter, va_list p, t_cut *cut, int *size)
+int	ft_print(char converter, va_list p, t_cut *cut)
 {
 	//cas is convert
 	//cas pas un convert yaura un warning mais affiche
@@ -48,38 +48,48 @@ void	ft_print(char converter, va_list p, t_cut *cut, int *size)
 	if (converter == 'c')
 	{
 		// ft_putchar(va_arg(p, int));
-		*size = *size + ft_printchar(converter, p, cut);
+		return (ft_printchar(converter, p, cut));
 	}
 	else if (converter == 's')
 	{
-		*size = *size + ft_printstr(converter, p, cut);
+		return (ft_printstr(converter, p, cut));
 		// ft_putstr(va_arg(p, char*));
 	}
 	else if (converter == 'p')
-		ft_putaddress(va_arg(p, void*));
+	{
+		return (ft_putaddress(converter, p, cut));
+		// ft_putaddress(va_arg(p, void*));
+	}
 	else if (converter == 'd' || converter == 'i')
 	{
-		*size = *size + ft_printnbr(converter, p, cut);
+		return (ft_printnbr(converter, p, cut));
 		// ft_putnbr(va_arg(p, int));
 	}
 	else if (converter == 'u')
 		ft_putnbr_unsigned(va_arg(p, unsigned int));
 	else if (converter == 'x')
-		ft_putnbr_base((unsigned long)va_arg(p, int),
-		"0123456789abcdef", 16);
+	{
+			return (ft_printnbr_base(converter, p, cut));
+		// ft_putnbr_base((unsigned long)va_arg(p, int),
+		// "0123456789abcdef", 16);
+	}
 	else if (converter == 'X')
+	{
+		// return (ft_printnbr_base(converter, p, cut));
 		ft_putnbr_base((unsigned long)va_arg(p, int),
 		"0123456789ABCDEF", 16);
+	}
 	else if(converter == '%' && cut->str_lenght > 1)
 	{
 		//les flags marchent ici
-		*size = *size + ft_printchar(converter, p, cut);
-		// *size = *size + 1;
+		return (ft_printchar(converter, p, cut));
+		// return (1);
 	}
+	return (0);
 	// else if(cut->str_lenght > 1)//ne fait rien si ce n'est pas un bon converter
 	// {
 	// 	write(1, &converter, 1);
-	// 	*size = *size + 1;
+	// 	return (1);
 	// }
 }
 
@@ -89,8 +99,10 @@ int	ft_printf(const char *str, ...)
 	t_cut	*list_cuts;
 	t_cut	*tmp;
 	int		size;
+	int 	add;
 
 	size = 0;
+	add = 0;
 	list_cuts = NULL;
 	list_cuts = ft_get_list_of_cut(str);
 	tmp = list_cuts;
@@ -101,8 +113,11 @@ int	ft_printf(const char *str, ...)
 	{
 		if (list_cuts->is_convert)
 		{
-			ft_print(list_cuts->str[list_cuts->str_lenght - 1],
-			p, list_cuts, &size);
+			if ((add = ft_print(list_cuts->str[list_cuts->str_lenght - 1],
+			p, list_cuts)) != -1)
+				size += add;
+			else
+				return (-1);
 		}
 		else
 		{

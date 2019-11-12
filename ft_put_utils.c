@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:37:02 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/10 15:47:23 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/11 19:14:55 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_strlenght(char *str)
 	return (i);
 }
 
-void	ft_putchar(char c)
+void	ft_putchar(unsigned char c)
 {
 	write(1, &c, 1);
 }
@@ -85,14 +85,14 @@ void	ft_putnbr_unsigned(unsigned int n)
 		ft_putchar(n % 10 + 48);
 }
 
-void	ft_putaddress(void *p)
-{
-	unsigned long l;
+// void	ft_putaddress(void *p)
+// {
+// 	unsigned long l;
 
-	l = (unsigned long)p;
-	write(1, "0x", 2);
-	ft_putnbr_base(l, "0123456789abcdef", 16);
-}
+// 	l = (unsigned long)p;
+// 	write(1, "0x", 2);
+// 	ft_putnbr_base(l, "0123456789abcdef", 16);
+// }
 
 int		ft_atoi_simple(char *str)
 {
@@ -131,6 +131,27 @@ int		ft_to_print_amount(int n)
 	while (a >= 10)
 	{
 		a = a / 10;
+		i++;
+	}
+	return (i + 1);
+}
+
+int		ft_to_print_amount_base(unsigned long l, int base)
+{
+	unsigned long a;
+	int i;
+
+	i = 0;
+	if (l < 0)
+	{
+		a = -l;
+		i++;
+	}
+	else
+		a = l;
+	while (a >= (unsigned long)base)
+	{
+		a = a / base;
 		i++;
 	}
 	return (i + 1);

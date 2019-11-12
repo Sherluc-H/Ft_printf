@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:48:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/10 20:04:42 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/11 19:27:00 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,34 @@ char	ft_found_zero_for_char(char *str, char converter)
 	return (found);
 }
 
-int		ft_precision(char *str, char converter, int i, int j, int *precision_exist, va_list p_copy)
+int		ft_precision(char *str, char converter, int i, int j, va_list p_copy)
 {
-	char *precision_str;//quand ya plusieurs .x ?
+	char *precision_str;
 	int precision;
+	int new_precision;
+	int num_last;
 
 	precision = 0;
 	precision_str = NULL;
+	new_precision = 0;
+	num_last = 0;
 	if (converter == '%')
 		i++;
 	while (str[i] && str[i] != converter)
 	{
-		if (str[i] == '.')
-			*precision_exist = 1;
+		if (str[i] == '*')
+		{
+			va_arg(p_copy, int);
+			// printf("p=%d", precision);
+
+		}
 		if (str[i] == '.' && ft_is_number(str[i + 1]))
 		{
 			i++;
 			while (ft_is_number(str[i + j]))
 				j++;
-			precision_str = malloc(sizeof(char) * (j + 1));
+			if (!(precision_str = malloc(sizeof(char) * (j + 1))))
+				return (-1);
 			j = 0;
 			i = i - j;
 			while (ft_is_number(str[i]))
@@ -73,39 +82,67 @@ int		ft_precision(char *str, char converter, int i, int j, int *precision_exist,
 				j++;
 				i++;
 			}
+			i--;
 			precision_str[j] = '\0';
+			new_precision = ft_atoi_simple(precision_str);
+			num_last = 1;
 		}
-		else if (str[i] == '.' && str[i + 1] == '*')
-			precision = va_arg(p_copy, int);
+		else if (str[i] == '.')
+		{
+			i++;
+			if (str[i] == '*')
+			{
+				if ((new_precision = va_arg(p_copy, int)))
+					precision = new_precision;
+				num_last = 0;
+				i++;
+				while (str[i] == '*')
+				{
+					va_arg(p_copy, int);
+					i++;
+
+				}
+			}
+			i--;
+		}
 		i++;
 	}
-	// if (precision)
-	// 	return (precision);
-	// return (ft_atoi_simple(precision_str));
-	if (precision_str)
-		return (ft_atoi_simple(precision_str));
+	if (num_last)
+		return (new_precision);
 	return (precision);
 }
 
 int		ft_width(char *str, char converter, va_list p_copy, int i)
 {
-	int width;//gere plusieurs * a la suite ?
+	int width;
 	char *width_str;
+	int new_width;
 	int j;
+	int num_last;
 
 	j = 0;
 	width = 0;
+	new_width = 0;
 	width_str = NULL;
+	num_last = 0;
 	if (converter == '%')
 		i++;
 	while (str[i] && str[i] != converter)
 	{
+		if (str[i] == '*')
+		{
+			if ((new_width = va_arg(p_copy, int)))
+			width = new_width;
+			num_last = 0;
+			// printf("wid=%d", width);
+		}
 		if(str[i] == '*' && ft_is_number(str[i + 1]))
 		{
 			i++;
 			while (ft_is_number(str[i + j]))
 				j++;
-			width_str = malloc(sizeof(char) * (j + 1));
+			if (!(width_str = malloc(sizeof(char) * (j + 1))))
+				return (-1);
 			j = 0;
 			i = i - j;
 			while (ft_is_number(str[i]))
@@ -114,17 +151,14 @@ int		ft_width(char *str, char converter, va_list p_copy, int i)
 				j++;
 				i++;
 			}
+			i--;
 			width_str[j] = '\0';
-			width = va_arg(p_copy, int);
+			new_width = ft_atoi_simple(width_str);
+			num_last = 1;
 		}
-		else if (str[i] == '*')
-			width = va_arg(p_copy, int);
 		i++;
 	}
-	if (width_str)
-		return (ft_atoi_simple(width_str));
+	if (num_last)
+		return (new_width);
 	return (width);
-	// if (width)
-	// 	return (width);
-	// return (ft_atoi_simple(width_str));
 }
