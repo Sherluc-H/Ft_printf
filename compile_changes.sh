@@ -1,1 +1,1 @@
-make libftprintf.a && gcc main.c libftprintf.a && ./a.out
+make libftprintf.a && rm *.o && gcc main.c libftprintf.a && ./a.out 

@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:37:02 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/11 19:14:55 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/13 18:16:00 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ void		ft_putnbr(int n)
 		ft_putchar(a % 10 + 48);
 }
 
-int		ft_putstr(char *s)
+int		ft_putstr(char *s, int precision)
 {
 	int	i;
 
 	i = 0;
 	if (s)
 	{
-		while (s[i])
+		while (s[i] && i < precision)
 		{
 			write(1, &s[i], 1);
 			i++;

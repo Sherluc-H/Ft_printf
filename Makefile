@@ -6,7 +6,7 @@
 #    By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/25 18:25:30 by lhuang            #+#    #+#              #
-#    Updated: 2019/11/11 18:40:23 by lhuang           ###   ########.fr        #
+#    Updated: 2019/11/12 19:12:49 by lhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,6 @@ HEADER = libftprintf.h
 PATH = libft/
 LIBFT_NAME = libft.a
 
-$(LIBFT_NAME):
-	make all -C libft/
-
 .c.o:
 	$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
 
@@ -32,11 +29,9 @@ ${NAME}: $(OBJS) $(HEADER)
 all: $(NAME)
 
 clean: 
-	make clean -C libft/
 	$(RM) $(OBJS)
 
 fclean: clean
-	make fclean -C libft/
 	$(RM) $(NAME)
 
 re: fclean all

@@ -6,177 +6,182 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 18:05:58 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/11 19:42:31 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/13 19:42:03 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-
-int	ft_putaddress(char converter, va_list p, t_cut *cut)
+int		ft_print_back_base(t_print_data data, unsigned long l, char *table, int base)
 {
-	// unsigned long l;
-
-	// l = (unsigned long)va_arg(p, void*);
-	// write(1, "0x", 2);
-	return (ft_printnbr_base(converter, p, cut));
-	// ft_putnbr_base(l, "0123456789abcdef", 16);
-	// return (1);
-}
-
-
-int		ft_print_back_base(int *size, int precision, int width, unsigned long l, int dot, int is_address)
-{
+	int size;
 	int precision_exist;
 
+	size = 0;
 	precision_exist = 1;
-	if (!precision)
+	if (!data.precision)
 	{
 		precision_exist = 0;
-		precision = ft_to_print_amount_base(l, 16);
-		if ((precision && dot) || l < 0)
-			precision -= 1;
+		data.precision = ft_to_print_amount_base(l, base);
+		if ((data.precision && data.dot) || l < 0)
+			data.precision -= 1;
 	}
-	if (is_address)
+	if (data.is_address)
 	{
-		precision += 2;
-		*size = *size + 2;
+		data.precision += 2;
+		size += 2;
 	}
 	if (l < 0)
 	{
-		precision++;
+		data.precision++;
 	}
-	while (precision < width)
+	if (!data.found_zero || data.dot)
 	{
-		write(1, " ", 1);
-		*size = *size + 1;
-		precision++;
+		while (data.precision < data.width)
+		{
+			write(1, " ", 1);
+			size += 1;
+			data.precision++;
+		}
 	}
 	if (l < 0)
 	{
 		write(1, "-", 1);
-		*size = *size + 1;
+		size += 1;
 		l = -l;
 	}
 		//cas a gerer si on a 0 en precision il faut pas afficher 0 en int mais les autres il faut
-	if (precision_exist || (!precision_exist && l != 0) || !dot)
-		*size = *size + ft_to_print_amount_base(l, 16);
+	if (precision_exist || (!precision_exist && l != 0) || !data.dot)
+		size += ft_to_print_amount_base(l, base);
 
-	if (is_address)
+	if (data.is_address)
 	{
 		write(1, "0x", 2);
-		// *size = *size + 2;
+		// size += 2;
 	}
-		if (width < precision)
+	if (data.width < data.precision)
 	{
-		width = precision;
+		data.width = data.precision;
 	}
-	while (*size < width)
+	while (size < data.width)
 	{
 		write(1, "0", 1);
-		*size = *size + 1;
-		precision++;
+		size += 1;
+		data.precision++;
 	}
-	if (precision_exist || (!precision_exist && l != 0) || !dot)
-		ft_putnbr_base(l, "0123456789abcdef", 16);
-	return (*size);
+	if (precision_exist || (!precision_exist && l != 0) || !data.dot)
+		ft_putnbr_base(l, table, base);
+	return (size);
 }
 
-int		ft_print_front_base(int *size, int precision, int width, unsigned long l, int dot, int is_address)
+int		ft_print_front_base(t_print_data data, unsigned long l, char *table, int base)
 {
+	int size;
 	int precision_exist;
 
+	size = 0;
 	precision_exist = 1;
-	if (!precision)
+	if (!data.precision)
 	{
 		precision_exist = 0;
-		precision = ft_to_print_amount_base(l, 16);
-		if ((precision && dot) || l < 0)
-			precision -= 1;
+		data.precision = ft_to_print_amount_base(l, base);
+		if ((data.precision && data.dot) || l < 0)
+			data.precision -= 1;
 	}
 	if (l < 0)
 	{
 		write(1, "-", 1);
-		*size = *size + 1;
-		precision++;
+		size += 1;
+		data.precision++;
 		l = -l;
 	}
-	if (precision_exist || (!precision_exist && l != 0) || !dot)
-		*size = *size + ft_to_print_amount_base(l, 16);
-	if (is_address)
+	if (precision_exist || (!precision_exist && l != 0) || !data.dot)
+		size += ft_to_print_amount_base(l, base);
+	if (data.is_address)
 	{
 		write(1, "0x", 2);
 	}
-	while (*size < precision)
+	while (size < data.precision)
 	{
 		write(1, "0", 1);
-		*size = *size + 1;
+		size += 1;
 	}
-	if (is_address)
+	if (data.is_address)
 	{
-		precision += 2;
-		*size = *size + 2;
+		data.precision += 2;
+		size += 2;
 	}
-	if (precision_exist || (!precision_exist && l != 0) || !dot)
-		ft_putnbr_base(l, "0123456789abcdef", 16);
-	while (precision < width)
+	if (precision_exist || (!precision_exist && l != 0) || !data.dot)
+		ft_putnbr_base(l, table, base);
+	while (data.precision < data.width)
 	{
 		write(1, " ", 1);
-		*size = *size + 1;
-		precision++;
+		size += 1;
+		data.precision++;
 	}	
-	return (*size);
+	return (size);
 }
 
-int		ft_printnbr_base(char converter, va_list p_copy, t_cut *cut)
+int		ft_print_base(t_print_data t_p_data, unsigned long l, char *table)
 {
-	int size;
-	int width;
-	int precision;
-	int found_minus;
-	// int n;
-	va_list p_copy2;
-	int i;
-	int dot;
-	unsigned long l;
-	int is_address;
+	if (t_p_data.found_minus)
+		return (ft_print_front_base(t_p_data, l, table, t_p_data.converter == 'u' ? 10 : 16));
+	else
+		return (ft_print_back_base(t_p_data, l, table, t_p_data.converter == 'u' ? 10 : 16));
+}
 
-	is_address = 0;
+int ft_get_flags_data(t_print_data *t_p_data, char converter, va_list p, t_cut *cut)
+{
+	va_list p_copy;
+	int i;
+
+	t_p_data->converter = converter;
+	t_p_data->is_address = 0;
 	if (converter == 'p')
-		is_address = 1;
-	dot = 0;
+		t_p_data->is_address = 1;
 	i = 0;
-	size = 0;
-	va_copy(p_copy2, p_copy);
-	found_minus = ft_found_minus(cut->str, converter);
-	if ((precision = ft_precision(cut->str, converter, 0, 0, p_copy2)) == -1)
+	va_copy(p_copy, p);
+	t_p_data->found_minus = ft_found_minus(cut->str, converter);
+	if ((t_p_data->precision = ft_precision(cut->str, converter, 0, 0, p_copy)) == -1)
 		return (-1);
-	// printf("precision%d", precision);
-	va_copy(p_copy2, p_copy);
-	if ((width = ft_width(cut->str, converter, p_copy2, 0)) == -1)
+	va_copy(p_copy, p);
+	if ((t_p_data->width = ft_width(cut->str, t_p_data, p_copy, 0)) == -1)
 		return (-1);
-	// printf("width=%d|", width);
-	va_end(p_copy2);
+
+	// printf("precision%d", t_p_data->precision);
+	// printf("width=%d|\n", t_p_data->width);
+	va_end(p_copy);
 	while ((cut->str)[i] != converter && (cut->str)[i])
 	{
 		if ((cut->str)[i] == '*')
-			va_arg(p_copy, int);
+			va_arg(p, int);
 		i++;
 	}
 	i = 0;
-	l = (unsigned long)va_arg(p_copy, void*);
-	if (l == 0)
+	t_p_data->dot = 0;
+	while ((cut->str)[i] != converter)
 	{
-		while ((cut->str)[i] != converter)
-		{
-			if ((cut->str)[i] == '.')
-				dot = 1;
-			i++;
-		}
+		if ((cut->str)[i] == '.')
+			t_p_data->dot = 1;
+		i++;
 	}
-	if (found_minus)
-		ft_print_front_base(&size, precision, width, l, dot, is_address);
-	else
-		ft_print_back_base(&size, precision, width, l, dot, is_address);
-	return (size);
+	t_p_data->found_zero = ft_found_zero_for_char(cut->str, converter);
+	return (1);
+}
+
+int		ft_printnbr_base(char converter, va_list p, t_cut *cut)
+{
+	t_print_data t_p_data;
+
+	if ((ft_get_flags_data(&t_p_data, converter, p, cut)) == -1)
+		return (-1);
+	if (converter == 'p')
+		return (ft_print_base(t_p_data, (unsigned long)va_arg(p, void*), "0123456789abcdef"));
+	else if (converter == 'u')
+		return (ft_print_base(t_p_data, (unsigned long)va_arg(p, unsigned int), "0123456789"));
+	else if (converter == 'x')
+		return (ft_print_base(t_p_data, (unsigned long)va_arg(p, unsigned int), "0123456789abcdef"));
+	else if (converter == 'X')
+		return (ft_print_base(t_p_data, (unsigned long)va_arg(p, unsigned int), "0123456789ABCDEF"));
+	return (-1);
 }

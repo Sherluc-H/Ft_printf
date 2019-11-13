@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:48:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/11 19:27:00 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/13 18:32:05 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,9 @@ int		ft_precision(char *str, char converter, int i, int j, va_list p_copy)
 			{
 				if ((new_precision = va_arg(p_copy, int)))
 					precision = new_precision;
+				//if < 0, precision = 0
+				if (precision < 0)
+					precision = 0;
 				num_last = 0;
 				i++;
 				while (str[i] == '*')
@@ -112,7 +115,7 @@ int		ft_precision(char *str, char converter, int i, int j, va_list p_copy)
 	return (precision);
 }
 
-int		ft_width(char *str, char converter, va_list p_copy, int i)
+int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 {
 	int width;
 	char *width_str;
@@ -125,14 +128,45 @@ int		ft_width(char *str, char converter, va_list p_copy, int i)
 	new_width = 0;
 	width_str = NULL;
 	num_last = 0;
-	if (converter == '%')
+	if (t_p_data->converter == '%')
 		i++;
-	while (str[i] && str[i] != converter)
+	while (str[i] && str[i] != t_p_data->converter)
 	{
+		if (ft_is_number(str[i]) && str[i - 1] != '*' && str[i - 1] != '.')
+		{
+			while (ft_is_number(str[i + j]))
+				j++;
+			if (!(width_str = malloc(sizeof(char) * (j + 1))))
+				return (-1);
+			j = 0;
+			i = i - j;
+			while (ft_is_number(str[i]))
+			{
+				width_str[j] = str[i];
+				j++;
+				i++;
+			}
+			width_str[j] = '\0';
+			new_width = ft_atoi_simple(width_str);
+			num_last = 1;
+		}
+		if (str[i] == '.')
+		{
+			i++;
+			while (ft_is_number(str[i]))
+				i++;
+		}
+		// if (str[i] == '*' && str[i - 1] != '.')
 		if (str[i] == '*')
 		{
 			if ((new_width = va_arg(p_copy, int)))
-			width = new_width;
+				width = new_width;
+			//si width < 0 il faut donner la valeur positif
+			if (width < 0)
+			{
+				width = -width;//le - sera vu comme un flag -
+				t_p_data->found_minus = 1;
+			}
 			num_last = 0;
 			// printf("wid=%d", width);
 		}
@@ -158,6 +192,7 @@ int		ft_width(char *str, char converter, va_list p_copy, int i)
 		}
 		i++;
 	}
+				// printf("wid=%d %d %d||\n", width, new_width, num_last);
 	if (num_last)
 		return (new_width);
 	return (width);

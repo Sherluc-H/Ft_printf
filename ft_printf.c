@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:13:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/11 19:41:14 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/13 16:08:30 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,55 +42,16 @@ int	ft_is_flag(char c)
 
 int	ft_print(char converter, va_list p, t_cut *cut)
 {
-	//cas is convert
-	//cas pas un convert yaura un warning mais affiche
-	//ATTENTION * peut prendre un argument plus loin pas necessairement a cote de l'appel ????
-	if (converter == 'c')
-	{
-		// ft_putchar(va_arg(p, int));
-		return (ft_printchar(converter, p, cut));
-	}
-	else if (converter == 's')
-	{
-		return (ft_printstr(converter, p, cut));
-		// ft_putstr(va_arg(p, char*));
-	}
-	else if (converter == 'p')
-	{
-		return (ft_putaddress(converter, p, cut));
-		// ft_putaddress(va_arg(p, void*));
-	}
+	if (converter == 'c' || converter == 's' ||
+		(converter == '%' && cut->str_lenght > 1))
+		return (ft_printcharacteres(converter, p, cut));
+	else if (converter == 'p' || converter == 'u' ||
+			converter == 'x' || converter == 'X')
+		return (ft_printnbr_base(converter, p, cut));
 	else if (converter == 'd' || converter == 'i')
-	{
 		return (ft_printnbr(converter, p, cut));
-		// ft_putnbr(va_arg(p, int));
-	}
-	else if (converter == 'u')
-		ft_putnbr_unsigned(va_arg(p, unsigned int));
-	else if (converter == 'x')
-	{
-			return (ft_printnbr_base(converter, p, cut));
-		// ft_putnbr_base((unsigned long)va_arg(p, int),
-		// "0123456789abcdef", 16);
-	}
-	else if (converter == 'X')
-	{
-		// return (ft_printnbr_base(converter, p, cut));
-		ft_putnbr_base((unsigned long)va_arg(p, int),
-		"0123456789ABCDEF", 16);
-	}
-	else if(converter == '%' && cut->str_lenght > 1)
-	{
-		//les flags marchent ici
-		return (ft_printchar(converter, p, cut));
-		// return (1);
-	}
-	return (0);
-	// else if(cut->str_lenght > 1)//ne fait rien si ce n'est pas un bon converter
-	// {
-	// 	write(1, &converter, 1);
-	// 	return (1);
-	// }
+	else
+		return (0);
 }
 
 int	ft_printf(const char *str, ...)
