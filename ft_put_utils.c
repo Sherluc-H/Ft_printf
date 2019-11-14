@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:37:02 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/13 18:16:00 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/14 14:59:25 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int		ft_to_print_amount_base(unsigned long l, int base)
 {
 	unsigned long a;
 	int i;
-
+	
 	i = 0;
 	if (l < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:48:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/13 18:32:05 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/14 16:52:05 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 	int new_width;
 	int j;
 	int num_last;
+	int tmp;
 
 	j = 0;
 	width = 0;
@@ -147,8 +148,11 @@ int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 				i++;
 			}
 			width_str[j] = '\0';
-			new_width = ft_atoi_simple(width_str);
-			num_last = 1;
+			if ((tmp = ft_atoi_simple(width_str)) != 0)
+			{
+				new_width = tmp;
+				num_last = 1;
+			}
 		}
 		if (str[i] == '.')
 		{
@@ -156,8 +160,8 @@ int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 			while (ft_is_number(str[i]))
 				i++;
 		}
-		// if (str[i] == '*' && str[i - 1] != '.')
-		if (str[i] == '*')
+				// if (str[i] == '*')
+		if (str[i] == '*' && str[i - 1] != '.')
 		{
 			if ((new_width = va_arg(p_copy, int)))
 				width = new_width;
@@ -168,8 +172,9 @@ int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 				t_p_data->found_minus = 1;
 			}
 			num_last = 0;
-			// printf("wid=%d", width);
 		}
+		if (str[i] == '*' && str[i - 1] == '.')
+			va_arg(p_copy, int);
 		if(str[i] == '*' && ft_is_number(str[i + 1]))
 		{
 			i++;
@@ -187,8 +192,12 @@ int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy, int i)
 			}
 			i--;
 			width_str[j] = '\0';
-			new_width = ft_atoi_simple(width_str);
-			num_last = 1;
+			if ((tmp = ft_atoi_simple(width_str)) != 0)
+			{
+				new_width = tmp;
+				num_last = 1;
+			}
+			// new_width = ft_atoi_simple(width_str);
 		}
 		i++;
 	}

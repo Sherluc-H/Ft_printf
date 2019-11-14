@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:55:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/13 19:41:58 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/14 16:14:24 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,25 @@ int		ft_print_back(t_print_data data, int n)
 	int size;
 	int precision_exist;
 	unsigned int ui;
-
+	int max;
+	int j;
+	
+	j = 0;
 	size = 0;
 	precision_exist = 1;
 	if (!data.precision)
 	{
 		precision_exist = 0;
-		data.precision = ft_to_print_amount(n);
-		if ((data.precision && data.dot) || n < 0)
-			data.precision -= 1;
+		// data.precision = n < 0 ? ft_to_print_amount(n) - 1 : ft_to_print_amount(n);
+		data.precision = n < 0 || (data.dot && data.precision == 0) ?
+		ft_to_print_amount(n) - 1 : ft_to_print_amount(n);
+		// data.precision = ft_to_print_amount(n);
+		// if (n < 0 || (data.dot && data.precision == 0))
+		// 	data.precision -= 1;
+	}
+	if (data.dot && data.precision == 0 && n == 0)
+	{
+		j--;
 	}
 	if (n < 0)
 	{
@@ -36,11 +46,13 @@ int		ft_print_back(t_print_data data, int n)
 		ui = n;
 	if (!data.found_zero || data.dot)
 	{
-		while (data.precision < data.width)
+		max = ft_to_print_amount(n) < data.precision ? data.precision : ft_to_print_amount(n);
+		while (j < data.width - max)
 		{
 			write(1, " ", 1);
 			size += 1;
 			data.precision++;
+			j++;
 		}
 	}
 		//cas a gerer si on a 0 en precision il faut pas afficher 0 en int mais les autres il faut
@@ -71,20 +83,34 @@ int		ft_print_front(t_print_data data, int n)
 	int size;
 	int precision_exist;
 	unsigned int ui;
+	int j;
+	int max;
+
+	j = 0;
 
 	size = 0;
 	precision_exist = 1;
 	if (!data.precision)
 	{
 		precision_exist = 0;
-		data.precision = ft_to_print_amount(n);
-		if ((data.precision && data.dot) || n < 0)
-			data.precision -= 1;
+		data.precision = n < 0 || (data.dot && data.precision == 0) ?
+		ft_to_print_amount(n) - 1 : ft_to_print_amount(n);
+		// data.precision = ft_to_print_amount(n);
+		// if (n < 0 || (data.dot && data.precision == 0))
+		// 	data.precision -= 1;
+		// 	// (data.precision && data.dot) || 
+	}
+	if (data.dot && data.precision == 0 && n == 0)
+	{
+		j--;
 	}
 	if (n < 0)
 	{
 		ui = -n;
+		if (data.precision< ft_to_print_amount_base(ui, 10))
+			data.precision = ft_to_print_amount_base(ui, 10);
 		data.precision++;
+		// j++;
 		size += 1;
 		write (1, "-", 1);
 	}
@@ -99,11 +125,15 @@ int		ft_print_front(t_print_data data, int n)
 	}
 	if (precision_exist || (!precision_exist && n != 0) || !data.dot)
 		ft_putnbr_base(ui, "0123456789", 10);
-	while (data.precision < data.width)
+			// printf("width=%d|\n", data.width);
+	max = ft_to_print_amount_base(ui, 10) < data.precision ? data.precision : ft_to_print_amount_base(ui, 10);
+			// printf("data here = %d %d", data.width, max);
+
+	while (j < data.width - max)
 	{
 		write(1, " ", 1);
 		size += 1;
-		data.precision++;
+		j++;
 	}	
 	return (size);
 }
@@ -161,7 +191,9 @@ int		ft_print_back_str(t_print_data data, char *str, char to_add)
 	int size;
 	char *nul;
 	int i;
+	int precision_zero;
 
+	precision_zero = 0;
 	i = 0;
 	nul = "(null)";
 	size = 0;
@@ -179,17 +211,22 @@ int		ft_print_back_str(t_print_data data, char *str, char to_add)
 		size += ft_putstr(str, data.precision);
 		return (size);
 	}
-	if (data.precision > 6 || data.precision == 0)
+	if (data.precision == 0)
+		precision_zero = 1;
+	if (data.precision > 6 || (data.precision == 0 && !data.dot))
 		data.precision = 6;
 	while (size + data.precision < data.width)
 	{
 		write(1, &to_add, 1);
 		size++;
 	}
-	while (i < data.precision)
+	if ((data.dot && !precision_zero) || !data.dot)
 	{
-		write (1, &nul[i], 1);
-		i++;
+		while (i < data.precision)
+		{
+			write (1, &nul[i], 1);
+			i++;
+		}
 	}
 	return (size + data.precision);
 }
@@ -199,7 +236,9 @@ int		ft_print_front_str(t_print_data data, char *str, char to_add)
 	int size;
 	char *nul;
 	int i;
+	int precision_zero;
 
+	precision_zero = 0;
 	i = 0;
 	nul = "(null)";
 	size = 0;
@@ -215,12 +254,17 @@ int		ft_print_front_str(t_print_data data, char *str, char to_add)
 		}	
 		return (size);
 	}
-	if (data.precision > 6 || data.precision == 0)
+	if (data.precision == 0)
+		precision_zero = 1;
+	if (data.precision > 6 || (data.precision == 0 && !data.dot))
 		data.precision = 6;
-	while (i < data.precision)
+	if ((data.dot && !precision_zero) || !data.dot)
 	{
-		write (1, &nul[i], 1);
-		i++;
+		while (i < data.precision)
+		{
+			write (1, &nul[i], 1);
+			i++;
+		}
 	}
 	while (size + data.precision < data.width)
 	{
@@ -234,11 +278,9 @@ int		ft_printcharacteres(char converter, va_list p, t_cut *cut)
 {
 	t_print_data t_p_data;
 	char to_add;
-	// int found_zero;
 
 	if ((ft_get_flags_data(&t_p_data, converter, p, cut)) == -1)
 		return (-1);
-	// found_zero = ft_found_zero_for_char(cut->str, converter);
 	to_add = ' ';
 	if (t_p_data.found_minus)
 		t_p_data.found_zero = 0;
