@@ -294,6 +294,18 @@ int	main(int argc, char **argv)
 	printf("size = %d\n", printf("orig:%*0da\n", 3, 5, 6, 7, 8, 9, 21));
 	printf("size = %d\n", ft_printf("mine:%42-0da\n", 21));
 	printf("size = %d\n", printf("orig:%42-0da\n", 21));
+	printf("size = %d\n", ft_printf("mine:%*.*sabc\n", 5, -10, "\0"));
+	printf("size = %d\n", printf("orig:%*.*sabc\n", 5, -10, "\0"));	
+	printf("size = %d\n", ft_printf("mine:%*.*dabc\n", 5, -22, 0));
+	printf("size = %d\n", printf("orig:%*.*dabc\n", 5, -22, 0));
+	printf("size = %d\n", ft_printf("mine:%*.*.dabc\n", 5, -22, 0));
+	printf("size = %d\n", printf("orig:%*.*.dabc\n", 5, -22, 0));
+	printf("size = %d\n", ft_printf("mine:%*.*cabc\n", 10, '\0'));
+	printf("size = %d\n", printf("orig:%*.*cabc\n", 10, '\0'));
+	printf("size = %d\n", ft_printf("mine:%*.sabc\n", 10, "\0"));
+	printf("size = %d\n", printf("orig:%*.sabc\n", 10, "\0"));
+	printf("size = %d\n", ft_printf("mine:%*.-22dabc\n", 5, 1));
+	printf("size = %d\n", printf("orig:%*.-22dabc\n", 5, 1));
 // "'%*.-*0d'\n", 3, 5, 6, 7, 8, 9, 21
 // ("'%42-0d'\n", 21);
 }

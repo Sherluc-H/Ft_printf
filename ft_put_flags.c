@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:48:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/14 16:52:05 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/14 19:26:58 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,19 @@ int		ft_precision(char *str, char converter, int i, int j, va_list p_copy)
 			i++;
 			if (str[i] == '*')
 			{
-				if ((new_precision = va_arg(p_copy, int)))
+				new_precision = va_arg(p_copy, int);
+				if (new_precision > 0)
 					precision = new_precision;
+				// if (new_precision < 0)
+				// {
+				// 	printf("ok");
+				// }
 				//if < 0, precision = 0
-				if (precision < 0)
-					precision = 0;
+				// if (precision < 0)
+				// {
+				// 	precision = 0;
+				// 	printf("not ok");
+				// }
 				num_last = 0;
 				i++;
 				while (str[i] == '*')

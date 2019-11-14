@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 18:05:58 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/14 15:48:46 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/14 19:27:04 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,89 @@ int		ft_print_base(t_print_data t_p_data, unsigned long l, char *table)
 		return (ft_print_back_base(t_p_data, l, table, t_p_data.converter == 'u' ? 10 : 16));
 }
 
+int		ft_precision2(char *str, char converter, int i, int j, va_list p_copy)
+{
+	char *precision_str;
+	int precision;
+	int new_precision;
+	int num_last;
+
+	precision = 0;
+	precision_str = NULL;
+	new_precision = 0;
+	num_last = 0;
+	if (converter == '%')
+		i++;
+	while (str[i] && str[i] != converter)
+	{
+		if (str[i] == '*')
+		{
+			va_arg(p_copy, int);
+			// printf("p=%d", precision);
+
+		}
+		if (str[i] == '.' && ft_is_number(str[i + 1]))
+		{
+			i++;
+			while (ft_is_number(str[i + j]))
+				j++;
+			if (!(precision_str = malloc(sizeof(char) * (j + 1))))
+				return (-1);
+			j = 0;
+			i = i - j;
+			while (ft_is_number(str[i]))
+			{
+				precision_str[j] = str[i];
+				j++;
+				i++;
+			}
+			i--;
+			precision_str[j] = '\0';
+			new_precision = ft_atoi_simple(precision_str);
+			num_last = 1;
+		}
+		else if (str[i] == '.')
+		{
+			i++;
+			if (str[i] == '*')
+			{
+				new_precision = va_arg(p_copy, int);
+				if (new_precision > 0)
+					precision = new_precision;
+				if (new_precision < 0)
+				{
+					// printf("ok");
+					precision = -1;
+				}
+				//if < 0, precision = 0
+				// if (precision < 0)
+				// {
+				// 	precision = 0;
+				// 	printf("not ok");
+				// }
+				num_last = 0;
+				i++;
+				while (str[i] == '*')
+				{
+					va_arg(p_copy, int);
+					i++;
+
+				}
+			}
+			else
+			{
+				new_precision = 0;
+				num_last = 1;
+			}
+			i--;
+		}
+		i++;
+	}
+	if (num_last)
+		return (new_precision);
+	return (precision);
+}
+
 int ft_get_flags_data(t_print_data *t_p_data, char converter, va_list p, t_cut *cut)
 {
 	va_list p_copy;
@@ -180,14 +263,23 @@ int ft_get_flags_data(t_print_data *t_p_data, char converter, va_list p, t_cut *
 		return (-1);
 	// printf("precision%d", t_p_data->precision);
 	// printf("width=%d|\n", t_p_data->width);
-	va_end(p_copy);
+	// va_end(p_copy);
 	t_p_data->dot = 0;
+	while ((cut->str)[i] != converter)
+	{
+		if ((cut->str)[i] == '.')
+			t_p_data->dot = 1;
+		i++;
+	}
+	va_copy(p_copy, p);
+	if ((ft_precision2(cut->str, converter, 0, 0, p_copy)) == -1)
+		t_p_data->dot = 0;
+	va_end(p_copy);
+	i = 0;
 	while ((cut->str)[i] != converter)
 	{
 		if ((cut->str)[i] == '*')
 			va_arg(p, int);
-		else if ((cut->str)[i] == '.')
-			t_p_data->dot = 1;
 		i++;
 	}
 	return (1);
