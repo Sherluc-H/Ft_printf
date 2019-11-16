@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:43:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/10 13:32:11 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 11:27:32 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,39 @@ int		ft_create_cut_non_convert(t_cut **cut, const char *str, int i, int j)
 	return (1);
 }
 
+void	ft_loop_non_converter(const char *str, int *i, int *j, int *bool_nv_mot)
+{
+	while (str[*i] != '%' && str[*i])
+	{
+		if (*bool_nv_mot)
+			*bool_nv_mot = 0;
+		*i = *i + 1;
+		*j = *j + 1;
+	}
+}
+
+void	ft_loop_converter(const char *str, int *i, int *j)
+{
+	if (str[*i] == '%')
+	{
+		if (str[*i + 1])//si cest que 1 % a la fin
+		{
+			*i = *i + 1;
+			*j = *j + 1;
+		}
+		while (ft_is_flag(str[*i]) && str[*i])
+		{
+			*i = *i + 1;
+			*j = *j + 1;
+		}
+		if (str[*i])
+		{
+			*i = *i + 1;
+			*j = *j + 1;
+		}//va apres le \0 ? sinon ?
+	}
+}
+
 t_cut	*ft_get_list_of_cut(const char *str)//compte le nb de str total conversion et non conversion inclus
 {
 	int		i;
@@ -61,35 +94,12 @@ t_cut	*ft_get_list_of_cut(const char *str)//compte le nb de str total conversion
 	while (str[i])
 	{
 		j = 0;
-		while (str[i] != '%' && str[i])
-		{
-			if (bool_nv_mot)
-				bool_nv_mot = 0;
-			i++;
-			j++;
-		}
+		ft_loop_non_converter(str, &i, &j, &bool_nv_mot);
 		if (j != 0)
 			ft_create_cut_non_convert(&first, str, i, j);
 		j = 0;
 		bool_nv_mot = 1;
-		if (str[i] == '%')
-		{
-			if(str[i + 1])//si cest que 1 % a la fin
-			{
-				i++;
-				j++;
-			}
-			while (ft_is_flag(str[i]) && str[i])
-			{
-				i++;
-				j++;
-			}
-			if(str[i])
-			{
-				j++;
-				i++;
-			}//va apres le \0 ? sinon ?
-		}
+		ft_loop_converter(str, &i, &j);
 		if (j != 0)
 			ft_create_cut_convert(&first, str, i, j);
 	}
