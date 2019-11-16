@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	main(int argc, char **argv)
 {
@@ -349,6 +349,13 @@ int	main(int argc, char **argv)
 	// printf("size = %d\n", printf("orig:%.6.*.3.*r\n", 5, 22, 1));
 	// printf("size = %d\n", ft_printf("mine:%*.-22dabc\n", 5, 1));
 	// printf("size = %d\n", printf("orig:%*.-22dabc\n", 5, 1));
+
+	printf("size = %d\n", ft_printf("mine:%05.*d|", -15, 42));
+	printf("size = %d\n", printf("orig:%05.*d|", -15, 42));
+	printf("size = %d\n", ft_printf("mine:%*c|", 0, 0));
+	printf("size = %d\n", printf("orig:%*c|", 0, 0));
+	printf("size = %d\n", ft_printf("mine:%*c|", -15, 0));
+	printf("size = %d\n", printf("orig:%*c|", -15, 0));
 // "'%*.-*0d'\n", 3, 5, 6, 7, 8, 9, 21
 // ("'%42-0d'\n", 21);
 // while(1);

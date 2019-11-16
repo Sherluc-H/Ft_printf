@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 15:45:30 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 16:36:51 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:56:27 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int		ft_width_number(char *str, int *i, int *width)
 {

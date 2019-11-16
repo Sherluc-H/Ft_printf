@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 12:48:03 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:15:35 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:56:04 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 char	ft_found_minus(char *str, char converter)
 {

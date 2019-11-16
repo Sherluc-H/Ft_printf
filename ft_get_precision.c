@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 13:58:10 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 14:31:40 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:56:30 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int		ft_number_after_dot(char *str, int *i, int *precision)
 {

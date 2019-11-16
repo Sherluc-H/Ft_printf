@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 11:34:51 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 11:41:56 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:55:58 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 void	ft_putnbr(int n)
 {

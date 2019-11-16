@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:48:27 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 11:15:08 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:56:33 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 t_cut	*ft_newcut(char *str, int str_lenght, int is_convert)
 {

@@ -6,11 +6,11 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:13:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:21:38 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:56:21 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 // warning: data argument not used by format string
 //todo : check nb argument (while loop ?)
