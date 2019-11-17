@@ -6,13 +6,13 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 16:48:21 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:17 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 14:02:26 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_print_back_char(t_print_data data, int n, char to_add)
+int			ft_print_back_char(t_print_data data, int n, char to_add)
 {
 	int size;
 
@@ -27,7 +27,7 @@ int		ft_print_back_char(t_print_data data, int n, char to_add)
 	return (size);
 }
 
-int		ft_print_front_char(t_print_data data, int n, char to_add)
+int			ft_print_front_char(t_print_data data, int n, char to_add)
 {
 	int size;
 
@@ -42,7 +42,7 @@ int		ft_print_front_char(t_print_data data, int n, char to_add)
 	return (size);
 }
 
-int		ft_print_characteres(char converter, t_print_data t_p_data,
+static int	ft_print_characteres(char converter, t_print_data t_p_data,
 		va_list p, char to_add)
 {
 	if (t_p_data.found_minus)
@@ -63,7 +63,7 @@ int		ft_print_characteres(char converter, t_print_data t_p_data,
 	}
 }
 
-int		ft_printcharacteres(char converter, va_list p, t_cut *cut)
+int			ft_printcharacteres(char converter, va_list p, t_cut *cut)
 {
 	t_print_data	t_p_data;
 	char			to_add;

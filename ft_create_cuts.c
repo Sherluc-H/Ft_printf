@@ -6,13 +6,13 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:43:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:36 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 13:58:40 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_create_cut_convert(t_cut **cut, const char *str, int i, int j)
+static int	ft_create_cut_convert(t_cut **cut, const char *str, int i, int j)
 {
 	char	*new_str;
 	int		k;
@@ -30,7 +30,8 @@ int		ft_create_cut_convert(t_cut **cut, const char *str, int i, int j)
 	return (1);
 }
 
-int		ft_create_cut_non_convert(t_cut **cut, const char *str, int i, int j)
+static int	ft_create_cut_non_convert(t_cut **cut,
+			const char *str, int i, int j)
 {
 	char	*new_str;
 	int		k;
@@ -48,7 +49,8 @@ int		ft_create_cut_non_convert(t_cut **cut, const char *str, int i, int j)
 	return (1);
 }
 
-void	ft_loop_non_converter(const char *str, int *i, int *j, int *bool_nv_mot)
+static void	ft_loop_non_converter(const char *str,
+			int *i, int *j, int *bool_nv_mot)
 {
 	while (str[*i] != '%' && str[*i])
 	{
@@ -59,11 +61,11 @@ void	ft_loop_non_converter(const char *str, int *i, int *j, int *bool_nv_mot)
 	}
 }
 
-void	ft_loop_converter(const char *str, int *i, int *j)
+static void	ft_loop_converter(const char *str, int *i, int *j)
 {
 	if (str[*i] == '%')
 	{
-		if (str[*i + 1])//si cest que 1 % a la fin
+		if (str[*i + 1])
 		{
 			*i = *i + 1;
 			*j = *j + 1;
@@ -77,11 +79,11 @@ void	ft_loop_converter(const char *str, int *i, int *j)
 		{
 			*i = *i + 1;
 			*j = *j + 1;
-		}//va apres le \0 ? sinon ?
+		}
 	}
 }
 
-t_cut	*ft_get_list_of_cut(const char *str)//compte le nb de str total conversion et non conversion inclus
+t_cut		*ft_get_list_of_cut(const char *str)
 {
 	int		i;
 	int		j;

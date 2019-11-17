@@ -6,13 +6,13 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 13:58:10 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:30 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 14:02:52 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_number_after_dot(char *str, int *i, int *precision)
+static int	ft_number_after_dot(char *str, int *i, int *precision)
 {
 	int		j;
 	char	*precision_str;
@@ -34,7 +34,7 @@ int		ft_number_after_dot(char *str, int *i, int *precision)
 	return (1);
 }
 
-void	ft_asterix_after_dot(char *str, int *i, int *precision,
+static void	ft_asterix_after_dot(char *str, int *i, int *precision,
 			va_list p_copy)
 {
 	int new_precision;
@@ -52,11 +52,11 @@ void	ft_asterix_after_dot(char *str, int *i, int *precision,
 			*i = *i + 1;
 		}
 	}
-	else//.sans rien d autre
+	else
 		*precision = 0;
 }
 
-int		ft_precision(char *str, char converter, va_list p_copy, int i)
+int			ft_precision(char *str, char converter, va_list p_copy, int i)
 {
 	int precision;
 
@@ -85,7 +85,7 @@ int		ft_precision(char *str, char converter, va_list p_copy, int i)
 	return (precision);
 }
 
-void	ft_asterix_after_dot_negatif(char *str, int *i,
+static void	ft_asterix_after_dot_negatif(char *str, int *i,
 		int *precision, va_list p_copy)
 {
 	int new_precision;
@@ -105,11 +105,11 @@ void	ft_asterix_after_dot_negatif(char *str, int *i,
 			*i = *i + 1;
 		}
 	}
-	else//.sans rien d autre
+	else
 		*precision = 0;
 }
 
-int		ft_precision_n(char *str, char converter, va_list p_copy, int i)
+int			ft_precision_n(char *str, char converter, va_list p_copy, int i)
 {
 	int precision;
 

@@ -6,7 +6,7 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:48:27 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:33 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 13:39:19 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,6 @@ void	ft_add_back_cut(t_cut **cut, t_cut *new_cut)
 		while (list_cut->next)
 			list_cut = list_cut->next;
 		list_cut->next = new_cut;
-	}
-}
-
-void	ft_print_cut_list(t_cut **cut)
-{
-	t_cut	*list_cut;
-
-	if (cut && *cut)
-	{
-		list_cut = *cut;
-		while (list_cut)
-		{
-			// printf("->|str=%s,", list_cut->str);
-			// printf("len=%d,", list_cut->str_lenght);
-			// printf("is=%d|", list_cut->is_convert);
-			list_cut = list_cut->next;
-		}
 	}
 }
 

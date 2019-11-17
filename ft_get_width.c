@@ -6,13 +6,13 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 15:45:30 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:27 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 14:02:06 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_width_number(char *str, int *i, int *width)
+static int	ft_width_number(char *str, int *i, int *width)
 {
 	int		j;
 	int		tmp;
@@ -36,17 +36,17 @@ int		ft_width_number(char *str, int *i, int *width)
 	return (1);
 }
 
-int		ft_asterix_width(char *str, va_list p_copy, int *width, int i)
+static int	ft_asterix_width(char *str, va_list p_copy, int *width, int i)
 {
 	int found_minus;
 
 	found_minus = 0;
-	if (str[i] == '*' && str[i - 1] != '.')// if (str[i] == '*')
+	if (str[i] == '*' && str[i - 1] != '.')
 	{
 		*width = va_arg(p_copy, int);
-		if (*width < 0)//si width < 0 il faut donner la valeur positif
+		if (*width < 0)
 		{
-			*width = -*width;//le - sera vu comme un flag -
+			*width = -*width;
 			found_minus = 1;
 		}
 	}
@@ -57,7 +57,7 @@ int		ft_asterix_width(char *str, va_list p_copy, int *width, int i)
 	return (0);
 }
 
-int		ft_width_check_dot(char *str, int *width, int *i)
+static int	ft_width_check_dot(char *str, int *width, int *i)
 {
 	if (ft_is_number(str[*i]) && str[*i - 1] != '*' && str[*i - 1] != '.')
 	{
@@ -73,7 +73,7 @@ int		ft_width_check_dot(char *str, int *width, int *i)
 	return (1);
 }
 
-int		ft_width(char *str, t_print_data *t_p_data, va_list p_copy)
+int			ft_width(char *str, t_print_data *t_p_data, va_list p_copy)
 {
 	int width;
 	int i;

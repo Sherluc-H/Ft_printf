@@ -6,24 +6,13 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:13:24 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:21 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 14:42:57 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// warning: data argument not used by format string
-//todo : check nb argument (while loop ?)
-//todo:  warning: data argument not used by format string [-Wformat-extra-args]
-//todo: warning: more '%' conversions than data arguments [-Wformat]
-//  ’-0.*’
-// cspdiuxX%
-// printf("%.0dd", 0);//output ==> rien
-//va_arg = int, long, decimal, double, struct, union, pointeur, ou typedef de ses types
-//todo: nombre negatif a prendre en compte
-//todo: faudra tout free
-
-int	ft_print(char converter, va_list p, t_cut *cut)
+static int	ft_print_conv(char converter, va_list p, t_cut *cut)
 {
 	if (converter == 'c' || converter == 's' ||
 		(converter == '%' && cut->str_lenght > 1))
@@ -40,7 +29,7 @@ int	ft_print(char converter, va_list p, t_cut *cut)
 	}
 }
 
-int	ft_start_print(t_cut *list_cuts, va_list p)
+static int	ft_start_print(t_cut *list_cuts, va_list p)
 {
 	int size;
 	int add;
@@ -51,8 +40,8 @@ int	ft_start_print(t_cut *list_cuts, va_list p)
 	{
 		if (list_cuts->is_convert)
 		{
-			if ((add = ft_print(list_cuts->str[list_cuts->str_lenght - 1],
-			p, list_cuts)) != -1)
+			if ((add = ft_print_conv(
+				list_cuts->str[list_cuts->str_lenght - 1], p, list_cuts)) != -1)
 				size += add;
 			else
 				return (-1);
@@ -67,7 +56,7 @@ int	ft_start_print(t_cut *list_cuts, va_list p)
 	return (size);
 }
 
-int	ft_printf(const char *str, ...)
+int			ft_printf(const char *str, ...)
 {
 	va_list	p;
 	t_cut	*list_cuts;
@@ -80,8 +69,6 @@ int	ft_printf(const char *str, ...)
 	list_cuts = NULL;
 	list_cuts = ft_get_list_of_cut(str);
 	tmp = list_cuts;
-	// printf("new\n");
-	// ft_print_cut_list(&list_cuts);
 	va_start(p, str);
 	if ((size = ft_start_print(list_cuts, p)) == -1)
 		return (ft_free_list_cut(&tmp));

@@ -6,13 +6,14 @@
 /*   By: lhuang <lhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/16 16:50:02 by lhuang            #+#    #+#             */
-/*   Updated: 2019/11/16 17:56:14 by lhuang           ###   ########.fr       */
+/*   Updated: 2019/11/17 14:03:39 by lhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_str_null_back(t_print_data data, char to_add, int i, int size)
+static int	ft_str_null_back(t_print_data data, char to_add,
+			int i, int size)
 {
 	char	*nul;
 	int		precision_zero;
@@ -39,7 +40,7 @@ int		ft_str_null_back(t_print_data data, char to_add, int i, int size)
 	return (size + data.precision);
 }
 
-int		ft_print_back_str(t_print_data data, char *str, char to_add)
+int			ft_print_back_str(t_print_data data, char *str, char to_add)
 {
 	int		size;
 	char	*nul;
@@ -67,7 +68,8 @@ int		ft_print_back_str(t_print_data data, char *str, char to_add)
 	return (ft_str_null_back(data, to_add, 0, 0));
 }
 
-int		ft_str_null_front(t_print_data data, char to_add, int i, int size)
+static int	ft_str_null_front(t_print_data data, char to_add,
+			int i, int size)
 {
 	char	*nul;
 	int		precision_zero;
@@ -94,7 +96,7 @@ int		ft_str_null_front(t_print_data data, char to_add, int i, int size)
 	return (size + data.precision);
 }
 
-int		ft_print_front_str(t_print_data data, char *str, char to_add)
+int			ft_print_front_str(t_print_data data, char *str, char to_add)
 {
 	int size;
 
